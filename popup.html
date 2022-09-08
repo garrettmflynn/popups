@@ -10,19 +10,7 @@
     This is a popup.
 </body>
 <script>
-    function someFunctionToCallWhenPopUpCloses() {
-        window.setTimeout(function() {
-            if (popUp.closed) {
-                alert("Pop-up definitely closed");
-            }
-        }, 1);
-    }
-
-    window.onunload = function() {
-        var win = window.opener;
-        if (!win.closed) {
-            win.someFunctionToCallWhenPopUpCloses();
-        }
-    };
+    const message="hello"
+    window.opener.postMessage(message)
 </script>
 </html>

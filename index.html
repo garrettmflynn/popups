@@ -10,17 +10,31 @@
     <button>Create a Popup</button>
 </body>
 <script>
+
+    let children = {}
     const button = document.body.querySelector('button')
     let i = 0
     button.onclick = () => {
         var win = window.open("popup.html", `popup${i}`, `popup`);
+        children[win.name] = win // register
+
         var pollTimer = window.setInterval(function() {
             if (win.closed !== false) { // !== is required for compatibility with Opera
                 window.clearInterval(pollTimer);
                 console.log('closed!')
+                delete children[win.name] // remove
             }
         }, 200);
         i++
+    }
+
+    window.onmessage = (ev) => {
+        if (children[ev.source.name]) console.log(`message from ${ev.source.name}`, ev.data)
+
+    }
+
+    window.onbeforeunload = () => {
+        for (let child in children) children[child].close()
     }
 
 
